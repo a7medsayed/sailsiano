@@ -6,7 +6,7 @@ module.exports = {
 
         try {
             
-        
+            console.log('registerNewUser');
         }
         catch (err) {
             return err;

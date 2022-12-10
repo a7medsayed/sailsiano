@@ -9,6 +9,9 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const { getUserProfile } = require("../../data-layer/repositories/user/UserRepository");
+const { registerNewUser } = require("../../domain-layer/user-usecase/UserUseCase");
+
 module.exports = {
   
     async registerNewUser(req, res) {
@@ -38,7 +41,7 @@ module.exports = {
 
     async getUserProfile(req, res) {
         try {
-            
+
             const user = await getUserProfile(req.user.id);
             res.send(user);
         }
