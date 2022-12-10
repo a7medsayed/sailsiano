@@ -11,9 +11,9 @@
 module.exports.routes = {
 
     //User Routes
-    'POST user/register': 'user.UserController.registerNewUser',
-    'POST user/login': 'user.UserController.loginUser',
-    'GET user/profile': 'user.UserController.getUserProfile',
-    'PUT user/profile.update': 'user.UserController.updateUserProfile',
+    'POST /user/register': 'user.UserController.registerNewUser',
+    'POST /user/login': 'user.UserController.loginUser',
+    'GET /user/profile': 'user.UserController.getUserProfile',
+    'PUT /user/profile.update': 'user.UserController.updateUserProfile',
 
 };
