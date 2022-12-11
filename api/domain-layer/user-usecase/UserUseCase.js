@@ -1,9 +1,19 @@
 /* eslint-disable indent */
 
-const { getByCondition, isExist } = require("../../data-layer/dbs/firestore/firestore");
 const bcrypt = require('bcrypt');
-const { createNewUser, isUserExist } = require("../../data-layer/repositories/user/UserRepository");
+const { createNewUser, isUserExist, getUserByUserName } = require("../../data-layer/repositories/user/UserRepository");
+var { scrypt  } = require('crypto');
+const  { promisify } = require('util');
+var jwt = require('jsonwebtoken');
 
+scrypt = promisify(scrypt);
+
+
+
+const authenticatePassword = async (  password , hashedPassword )=> {
+    return await bcrypt.compare(password, hashedPassword);
+
+    }
 module.exports = {
   
     async registerNewUser(body) {
@@ -98,20 +108,43 @@ module.exports = {
             await createNewUser(User.attributes);
             return {
                     status: "User Registered Successfuly",
-                    statusCode: 400
+                    statusCode: 200
                 }
         }
         catch (err) {
             return err;
          }
-    },
-
+    }
+    ,
     async loginUser(body) {
 
         try {
-            
-            const token = '';
-            return token;
+            const { UserName, Password } = body;
+
+            const user = await getUserByUserName(UserName);
+            if (!user) { 
+                return {
+                    status: 'this user not register',
+                    statusCode: 400
+                }
+            }
+
+            const isAuthnticated = await authenticatePassword(Password, user.Password);
+
+            if (isAuthnticated) {
+
+                const payload = {
+                    user: user.id
+                }
+           
+                var token = jwt.sign(payload, sails.config.jwtSecret, {expiresIn: sails.config.jwtExpires});
+                return { token: token };
+            }
+
+            return {
+                status: 'invalid passowrd',
+                statusCode: 400
+            };
         }
         catch (err) {
             return err;
@@ -121,6 +154,7 @@ module.exports = {
     async getUserProfile(id) {
         try {
           
+        
             const user = await getUserProfile(id);
             return user;
         }

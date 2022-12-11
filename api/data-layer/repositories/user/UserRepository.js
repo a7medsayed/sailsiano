@@ -1,16 +1,18 @@
-const { getById, create, isExist } = require("../../dbs/firestore/firestore")
+const { getById, create, isExist, getItemByCodition } = require("../../dbs/firestore/firestore")
 
 var table = "users";
 module.exports = {
 
     async createNewUser(user)
     {
-        console.log(user,table)
         return await create(user, table );
     }
     ,
     async getUserProfile(id) { 
         return await getById(id, table );
+    },
+    async getUserByUserName(userName) { 
+        return await getItemByCodition("users",'UserName',userName);
     },
     async isUserExist(uniqField, value) { 
         return await isExist("users", uniqField, value);

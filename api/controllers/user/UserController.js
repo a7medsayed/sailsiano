@@ -9,7 +9,7 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-const { registerNewUser, getUserProfile } = require("../../domain-layer/user-usecase/UserUseCase");
+const { registerNewUser, getUserProfile, loginUser } = require("../../domain-layer/user-usecase/UserUseCase");
 
 module.exports = {
   
@@ -42,7 +42,7 @@ module.exports = {
         try {
 
 
-            const user = await getUserProfile('req.user.id');
+            const user = await getUserProfile(req.user.id);
             res.send(user);
         }
         catch (err) {

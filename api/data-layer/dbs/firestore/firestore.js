@@ -19,7 +19,6 @@ module.exports = {
     async create(item , table) { 
       const usersDb = db.collection(table);
       var uniq = 'id' + (new Date()).getTime();
-      console.log('item', item)
         const response = await usersDb.doc(uniq).set(item);
         return response;
     },
@@ -31,6 +30,18 @@ module.exports = {
   async isExist(table, field, value) { 
     const size = await (await db.collection(table).where(field, "==", value).get()).size;
     return  size;
+  }
+,
+  async getItemByCodition(table, field, value) { 
+    let userCollection = db.collection(table);
+    let query = userCollection.where(field, "==", value);
+
+    let users = await (await query.get()).docs;
+    let result = [];
+    for (let user of users) { 
+      result.push(user.data());
+    }
+    return result[0];
   }
     
 }
