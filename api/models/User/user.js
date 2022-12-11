@@ -9,6 +9,7 @@ module.exports = {
 
   attributes: {
 
+    Id: { type: 'string', required: true, unique: true },
     UserName: { type: 'string', required: true, unique: true },
     Age: { type: 'number', required: true },
     Password: { type: 'string', required: true },

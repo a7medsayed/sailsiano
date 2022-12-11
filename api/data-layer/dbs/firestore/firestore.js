@@ -18,8 +18,8 @@ module.exports = {
 
     async create(item , table) { 
       const usersDb = db.collection(table);
-      var uniq = 'id' + (new Date()).getTime();
-        const response = await usersDb.doc(uniq).set(item);
+      
+        const response = await usersDb.doc(item.Id).set(item);
         return response;
     },
     async update(id, item, table) { 
