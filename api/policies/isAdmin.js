@@ -33,6 +33,9 @@ module.exports = async function(req, res, next) {
       
         const user = await getUserProfile(payload.user);
         if (!user) { return res.send(invalidToken); }
+        if (!user.Role.includes('admin')) {
+           return res.forbidden();
+         }
         req.user = {
             UserName: user.UserName,
             Email: user.Email,
