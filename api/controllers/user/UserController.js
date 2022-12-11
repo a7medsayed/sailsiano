@@ -9,7 +9,7 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-const { registerNewUser, getUserProfile } = require("../../domain-layer/user-usecase/UserUseCase");
+const { registerNewUser, getUserProfile, loginUser } = require("../../domain-layer/user-usecase/UserUseCase");
 
 module.exports = {
   
