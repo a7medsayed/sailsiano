@@ -16,4 +16,7 @@ module.exports.routes = {
     'GET /user/profile': 'user.UserController.getUserProfile',
     'PUT /user/profile.update': 'user.UserController.updateUserProfile',
 
+    //Search Routes
+    'POST /user/search': 'search.SearchController.searchUsers',
+
 };

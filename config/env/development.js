@@ -21,5 +21,8 @@ module.exports = {
     //   connection: 'someMongodbServer'
     // }
     jwtSecret: 'mysuperdevsecret',
-    jwtExpires: 500
-  };
+  jwtExpires: '180d',
+    
+  algoliaAppID: "Y7UZN26SEQ",
+  algoliaAdminKey: "0fe3c4d1ae4d567bc131b04a779c4372"
+};

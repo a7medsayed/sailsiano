@@ -5,6 +5,7 @@ const { createNewUser, isUserExist, getUserByUserName, getUserProfile, updateUse
 var { scrypt  } = require('crypto');
 const  { promisify } = require('util');
 var jwt = require('jsonwebtoken');
+const { pushUser } = require('../../data-layer/repositories/search/SearchRepository');
 
 scrypt = promisify(scrypt);
 
@@ -103,6 +104,7 @@ module.exports = {
             //encrypt password
             const hashedPassword = await bcrypt.hash(Password, 10);
             const User = require('../../models/User/user');
+            const UserIndex = require('../../models/Search/userIndex');
 
             var uniq = 'id' + (new Date()).getTime();
             User.attributes.Id = uniq;
@@ -112,6 +114,15 @@ module.exports = {
             User.attributes.UserName = UserName;
             User.attributes.Role = Role;
 
+            
+            UserIndex.attributes.Id = User.attributes.Id;
+            UserIndex.attributes.Age = User.attributes.Age;
+            UserIndex.attributes.Email = User.attributes.Email;
+            UserIndex.attributes.UserName = User.attributes.UserName;
+            UserIndex.attributes.Role = User.attributes.Role;
+
+            await pushUser(UserIndex.attributes);
+         
             //create user
             await createNewUser(User.attributes);
             return {
@@ -120,7 +131,7 @@ module.exports = {
                 }
         }
         catch (err) {
-            return err;
+              return err;
          }
     }
     ,
