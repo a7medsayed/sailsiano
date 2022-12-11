@@ -132,4 +132,3 @@ lib-cov
 *.log
 *.out
 *.pid
-firebase-key.json
