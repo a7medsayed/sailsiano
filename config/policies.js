@@ -21,6 +21,10 @@ module.exports.policies = {
     '*': 'isAuthenticated',
     'loginUser': true,
     'registerNewUser': true,
+  },
+
+  'search/SearchController': {
+    '*': 'isAdmin',
   }
   
     
