@@ -9,7 +9,7 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
-const { registerNewUser, getUserProfile, loginUser } = require("../../domain-layer/user-usecase/UserUseCase");
+const { registerNewUser, getUserProfile, loginUser, updateUserProfile } = require("../../domain-layer/user-usecase/UserUseCase");
 
 module.exports = {
   
@@ -54,8 +54,8 @@ module.exports = {
 
         try {
             
-             await updateUserProfile(req.user.id , req.body);
-            res.send('User Updated Successfully');
+             const response = await updateUserProfile(req.user.Id , req.body);
+            res.send(response);
         }
         catch (err) {
             res.send(err);
