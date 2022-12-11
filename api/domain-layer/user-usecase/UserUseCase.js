@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 
 const bcrypt = require('bcrypt');
-const { createNewUser, isUserExist, getUserByUserName, getUserProfile } = require("../../data-layer/repositories/user/UserRepository");
+const { createNewUser, isUserExist, getUserByUserName, getUserProfile, updateUserProfile, getUserByEmail } = require("../../data-layer/repositories/user/UserRepository");
 var { scrypt  } = require('crypto');
 const  { promisify } = require('util');
 var jwt = require('jsonwebtoken');
@@ -45,7 +45,13 @@ module.exports = {
                     
                 }
             }
-            
+            const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+            if (!emailRegex.test(Email)) { 
+                return {
+                    status: "Invalid Email",
+                    statusCode: 400
+                }
+            }
             if (!UserName) { 
                 return {
                     status: "UserName is required",
@@ -169,8 +175,60 @@ module.exports = {
 
         try {
             
-            const updatedUser = await updateUserProfile(id, body);
-            return updatedUser;
+            const user = await getUserProfile(id);
+            
+            const { Age, Email, UserName } = body;
+
+            if (Age) {
+                
+                if (Age < 18 || Age > 50) { 
+                    return {
+                        status: "Age should be between 18 and 50",
+                        statusCode: 400
+                        
+                    }
+                }
+                user.Age = Age;
+            }
+
+            if (Email) { 
+
+                const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+              
+                if (!emailRegex.test(Email)) { 
+                    return {
+                        status: "Invalid Email",
+                        statusCode: 400
+                    }
+                }
+                const existedUser = await getUserByEmail(Email);
+                if (existedUser && existedUser.Id != user.Id) { 
+                    return {
+                        status: "Email Already Exist",
+                        statusCode: 400
+                    }
+                }
+                user.Email = Email;
+            }
+            if (UserName) { 
+
+                const existedUser = await getUserByUserName(UserName);
+                if (existedUser && existedUser.Id != user.Id) { 
+                    return {
+                        status: "UserName Already Exist",
+                        statusCode: 400
+                    }
+                }
+                user.UserName = UserName;
+
+            }
+
+             await updateUserProfile(id, user);
+
+            return {
+                status: 'User Updated Successfuly',
+            statusCode: 200
+            };
             
         }
         catch (err) {
