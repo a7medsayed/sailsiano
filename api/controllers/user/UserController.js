@@ -42,7 +42,7 @@ module.exports = {
         try {
 
 
-            const user = await getUserProfile('req.user.id');
+            const user = await getUserProfile(req.user.id);
             res.send(user);
         }
         catch (err) {

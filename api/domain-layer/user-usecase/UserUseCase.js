@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { createNewUser, isUserExist, getUserByUserName } = require("../../data-layer/repositories/user/UserRepository");
 var { scrypt  } = require('crypto');
 const  { promisify } = require('util');
+var jwt = require('jsonwebtoken');
 
 scrypt = promisify(scrypt);
 
@@ -129,8 +130,15 @@ module.exports = {
             }
 
             const isAuthnticated = await authenticatePassword(Password, user.Password);
+
             if (isAuthnticated) {
-                return { token: 'aaaaadddadaf' };
+
+                const payload = {
+                    user: user.id
+                }
+           
+                var token = jwt.sign(payload, sails.config.jwtSecret, {expiresIn: sails.config.jwtExpires});
+                return { token: token };
             }
 
             return {
