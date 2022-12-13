@@ -28,3 +28,7 @@ Note:  Generators are usually run using the globally-installed `sails` CLI (comm
 # How To Start
  ### npm install
  ### npm run start
+
+# Postman Api Documentation
+ ## Import this file into Postman collections
+   + [ Postman collection json file ](https://drive.google.com/file/d/1BBxONkdcbRz7WtL0UzRrvQH2cAwhJtzQ/view?usp=share_link)
